@@ -64,7 +64,20 @@ public class fiCommand implements CommandExecutor {
 		    e.printStackTrace();
 		}
 		plugin.reloadConfig();
+	    } else if(args[0].equalsIgnoreCase("delete") && sender.hasPermission("fi.delete") && args.length== 2){
+		String name = String.valueOf(args[1]);
+		if(plugin.getConfig().contains(name)){
+		    plugin.getConfig().set(name, null);
+		    sender.sendMessage(ChatColor.GOLD+name+ChatColor.RED+" has been deleted!");
+		    return true;
+		}else{
+		    sender.sendMessage(ChatColor.GOLD+ name+ChatColor.RED+" hasn't been registered!");
+		    return true;
+		}
+	    } else if(args[0].equalsIgnoreCase("delete") && args.length != 2){
+		plugin.printHelp(sender);
 	    }
+
 	    return true;
 	}
 	return false;
