@@ -1,0 +1,7 @@
+name: FoodItems
+main: me.ceramictitan.foodItems.FoodItems
+version: 0.1
+commands:
+    fiCommand:
+        description: FoodItems
+        aliases: [fi, fooditems]

@@ -2,6 +2,8 @@ package me.ceramictitan.foodItems;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -9,16 +11,19 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+
 public class FoodItems extends JavaPlugin {
 
 	FileConfiguration config;
-
+	public List<String> active_effects = new ArrayList<String>();
 	@Override
 	public void onEnable(){
 		addConfig();
-		File g = new File(getDataFolder(), "items.yml");
-		if (!g.exists())
-			g.mkdirs();
+		File f = new File(getDataFolder() + File.separator);
+		File g = new File(f, "items.yml");
+		if(!f.exists()){
+			f.mkdirs();
+		}
 		if (!g.exists())
 			try {
 				g.createNewFile();
@@ -37,8 +42,6 @@ public class FoodItems extends JavaPlugin {
 	}
 
 	public void addConfig(){
-		getConfig().addDefault(path, value);
-		getConfig().addDefault(path, value);
 
 	}
 	@Override
