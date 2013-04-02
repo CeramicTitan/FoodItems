@@ -64,7 +64,7 @@ public class FoodItems extends JavaPlugin {
 	String[] help = new String[3];
 	help[0] = ChatColor.AQUA +"--------"+ ChatColor.DARK_GRAY + "FoodItems Help" + ChatColor.AQUA +"--------";
 	help[1] = ChatColor.GREEN+ "Add: "+ ChatColor.DARK_GRAY+"/fi add [name] [item-id] [effect 1] [effect 2]....";
-	help[2] = ChatColor.DARK_RED+ "Delete: "+ ChatColor.DARK_GRAY+ "/fi delte [name]";
+	help[2] = ChatColor.DARK_RED+ "Delete: "+ ChatColor.DARK_GRAY+ "/fi delete [name]";
 	return help;
     }
     public void printHelp(CommandSender sender){
@@ -72,12 +72,5 @@ public class FoodItems extends JavaPlugin {
 	    sender.sendMessage(helpLines);
 	}
     }
-    public boolean isNumber(String str) { 
-	for(char c : str.toCharArray()) { 
-	    if(!Character.isDigit(c)) {
-		return false;
-	    }
-	}
-	return true;
-    }
+
 }
