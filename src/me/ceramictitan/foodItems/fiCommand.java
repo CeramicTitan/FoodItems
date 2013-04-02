@@ -56,20 +56,19 @@ public class fiCommand implements CommandExecutor {
 			    player.sendMessage(ChatColor.RED+"Item Id: "+ChatColor.DARK_RED+String.valueOf(id)+ChatColor.RED+"(Material:" +Material.getMaterial(id).toString().toLowerCase().replaceAll("_", "")+")"+ChatColor.RED+ " is already being used!");
 			    return true;
 			}
-		    }else{
-			String[] effects = Arrays.copyOfRange(args, 3, 4);
-			try{
-			    plugin.config.set(name+".id", id);
-			    plugin.config.set(name+".effects", Arrays.asList(effects));
-			    plugin.config.save(new File(plugin.getDataFolder() + File.separator, "items.yml"));
-			} catch (IOException e) {
-			    e.printStackTrace();
-			}
-			plugin.reloadConfig();
-			sender.sendMessage("You successfully registered:" + name +" with the following id of"+ id);
-			if(plugin.getConfig().get(name) == null){
-			    sender.sendMessage("Config didn't save!");
-			}
+		    }
+		    String[] effects = Arrays.copyOfRange(args, 3, 4);
+		    try{
+			plugin.config.set(name+".id", id);
+			plugin.config.set(name+".effects", Arrays.asList(effects));
+			plugin.config.save(new File(plugin.getDataFolder() + File.separator, "items.yml"));
+		    } catch (IOException e) {
+			e.printStackTrace();
+		    }
+		    plugin.reloadConfig();
+		    sender.sendMessage("You successfully registered:" + name +" with the following id of"+ id);
+		    if(plugin.getConfig().get(name) == null){
+			sender.sendMessage("Config didn't save!");
 		    }
 		}
 	    }
@@ -79,7 +78,8 @@ public class fiCommand implements CommandExecutor {
 	    if(sender instanceof Player){
 		Player player = (Player)sender;
 		if(!player.hasPermission("fi.add")){
-		    player.sendMessage(ChatColor.RED+ "You do not have permission for this!");	
+		    player.sendMessage(ChatColor.RED+ "You do not have permission for this!");
+		    return true;
 		}
 	    }
 	    if(args[0].equalsIgnoreCase("add")){
