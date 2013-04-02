@@ -1,7 +1,6 @@
 package me.ceramictitan.foodItems;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 
 import org.bukkit.ChatColor;
@@ -48,8 +47,8 @@ public class fiCommand implements CommandExecutor {
 			return true;
 		    }
 		}
-		if(args[2].matches("0-9")){
-		    Integer id = Integer.valueOf(args[2]);
+		try { 
+		    Integer id = Integer.parseInt(String.valueOf(args[2])); 
 		    if(plugin.getConfig().contains(String.valueOf(id))){
 			if(sender instanceof Player){
 			    Player player = (Player)sender;
@@ -58,18 +57,16 @@ public class fiCommand implements CommandExecutor {
 			}
 		    }
 		    String[] effects = Arrays.copyOfRange(args, 3, 4);
-		    try{
-			plugin.config.set(name+".id", id);
-			plugin.config.set(name+".effects", Arrays.asList(effects));
-			plugin.config.save(new File(plugin.getDataFolder() + File.separator, "items.yml"));
-		    } catch (IOException e) {
-			e.printStackTrace();
-		    }
+		    plugin.config.set(name+".id", id);
+		    plugin.config.set(name+".effects", Arrays.asList(effects));
+		    plugin.config.save(new File(plugin.getDataFolder()+ File.separator, "items.yml"));
 		    plugin.reloadConfig();
 		    sender.sendMessage("You successfully registered:" + name +" with the following id of"+ id);
 		    if(plugin.getConfig().get(name) == null){
 			sender.sendMessage("Config didn't save!");
 		    }
+		}catch(Exception e){
+		    e.printStackTrace();
 		}
 	    }
 	    return true;
@@ -90,9 +87,9 @@ public class fiCommand implements CommandExecutor {
 			player.sendMessage(ChatColor.DARK_RED+name+ChatColor.RED+ " is already being used!");
 			return true;
 		    }
-		}
-		if(args[2].matches("0-9")){
-		    Integer id = Integer.valueOf(args[2]);
+		}   
+		try { 
+		    Integer id = Integer.parseInt(String.valueOf(args[2])); 
 		    if(plugin.getConfig().contains(String.valueOf(id))){
 			if(sender instanceof Player){
 			    Player player = (Player)sender;
@@ -100,26 +97,16 @@ public class fiCommand implements CommandExecutor {
 			    return true;
 			}
 		    }
-		    if(!args[2].matches("0-9")){
-			if(sender instanceof Player){
-			    Player player = (Player)sender;
-			    player.sendMessage(ChatColor.DARK_RED+String.valueOf(args[2])+ChatColor.RED+" is not a number!");
-			    return true;
-			}
-		    }
 		    String[] effects = Arrays.copyOfRange(args, 3, args.length);
 		    plugin.config.set(name+".id", id);
 		    plugin.config.set(name+".effects", Arrays.asList(effects));
-		    try {
-			plugin.config.save(new File(plugin.getDataFolder()+ File.separator, "items.yml"));
-		    } catch (IOException e) {
-			e.printStackTrace();
-		    }
-		    plugin.reloadConfig();
+		    plugin.config.save(new File(plugin.getDataFolder()+ File.separator, "items.yml"));
+		}catch(Exception e){
+		    e.printStackTrace();
 		}
-		return true;
+		plugin.reloadConfig();
 	    }
-
+	    return true;
 	}
 	return false;
 

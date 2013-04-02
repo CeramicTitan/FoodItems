@@ -72,6 +72,12 @@ public class FoodItems extends JavaPlugin {
 	    sender.sendMessage(helpLines);
 	}
     }
-
-
+    public boolean isNumber(String str) { 
+	for(char c : str.toCharArray()) { 
+	    if(!Character.isDigit(c)) {
+		return false;
+	    }
+	}
+	return true;
+    }
 }
