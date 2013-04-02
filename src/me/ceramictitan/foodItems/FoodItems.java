@@ -44,10 +44,6 @@ public class FoodItems extends JavaPlugin {
     public void addConfig(){
 
     }
-    @Override
-    public FileConfiguration getConfig() {
-	return this.config;
-    }
     public String[] getTitan(){
 	String[] titan = new String[8];
 	titan[0] = " ********** ** **********     **     ****     **";
