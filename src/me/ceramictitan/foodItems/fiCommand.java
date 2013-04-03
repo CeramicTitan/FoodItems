@@ -23,65 +23,86 @@ public class fiCommand implements CommandExecutor {
 	    plugin.printHelp(sender);
 	    return true;	
 	}
+
 	if(args.length > 0 && args.length < 3 ){
 	    sender.sendMessage(ChatColor.RED+"Not enough arugments!");
 	    plugin.printHelp(sender);
 	    return true;
-	}
-	else if(args.length >= 3){
-	    if(!sender.hasPermission("fi.add")){
+
+
+	}else if(args.length == 2){
+	    if(!sender.hasPermission("fi.delete")){
 		sender.sendMessage(ChatColor.RED+ "You do not have permission for this!");
 		return true;
 	    }
-	    if(args[0].equalsIgnoreCase("add")){
+
+
+	    if(args[0].equalsIgnoreCase("delete") && sender.hasPermission("fi.delete")){
 		String name = String.valueOf(args[1]);
 		if(plugin.config.contains(name)){
-		    sender.sendMessage(ChatColor.DARK_RED+name+ChatColor.RED+ " is already being used!");
-		    return true;
-		}  
-		try { 
-		    Integer id = Integer.parseInt(String.valueOf(args[2])); 
-		    if(plugin.config.contains(String.valueOf(id))){
-			sender.sendMessage(ChatColor.RED+"Item Id: "+ChatColor.DARK_RED+String.valueOf(id)+ChatColor.RED+"(Material:" +Material.getMaterial(id).toString().toLowerCase().replaceAll("_", "")+")"+ChatColor.RED+ " is already being used!");
+		    try{
+			plugin.config.set(name, null);
+			plugin.config.save(new File(plugin.getDataFolder()+ File.separator, "items.yml"));
+			plugin.reloadConfig();
+			sender.sendMessage(ChatColor.GOLD+name+ChatColor.RED+" has been deleted!");
 			return true;
-		    }
-		    String[] effects = Arrays.copyOfRange(args, 3, args.length);
-		    plugin.config.set(name+".id", id);
-		    plugin.config.set(name+".effects", Arrays.asList(effects));
-		    plugin.config.save(new File(plugin.getDataFolder()+ File.separator, "items.yml"));
-		    sender.sendMessage(ChatColor.GREEN +"You successfully registered: "+ChatColor.GOLD + name +ChatColor.GREEN+" with the following id: "+ChatColor.GOLD + id+"("+Material.getMaterial(id).toString().replace("_", "").toUpperCase()+")");
-		}catch(Exception e){
-		    e.printStackTrace();
-		}
-		plugin.reloadConfig();
+		    }catch(Exception e){e.printStackTrace();}
 
-	    }else if(args.length == 2){
-		if(!sender.hasPermission("fi.delete")){
+
+
+		}else{
+		    sender.sendMessage(ChatColor.GOLD+ name+ChatColor.RED+" hasn't been registered!");
+		    return true;
+		}
+
+
+	    }else if(args[0].equalsIgnoreCase("delete") && args.length != 2){
+		plugin.printHelp(sender);
+		return true;
+	    }
+
+
+
+	    else if(args.length >= 3){
+		if(!sender.hasPermission("fi.add")){
 		    sender.sendMessage(ChatColor.RED+ "You do not have permission for this!");
 		    return true;
-		}
-		if(args[0].equalsIgnoreCase("delete") && sender.hasPermission("fi.delete")){
+
+
+		}else if(args[0].equalsIgnoreCase("add")){
 		    String name = String.valueOf(args[1]);
 		    if(plugin.config.contains(name)){
-			try{
-			    plugin.config.set(name, null);
-			    plugin.config.save(new File(plugin.getDataFolder()+ File.separator, "items.yml"));
-			    plugin.reloadConfig();
-			    sender.sendMessage(ChatColor.GOLD+name+ChatColor.RED+" has been deleted!");
-			    return true;
-			}catch(Exception e){e.printStackTrace();}
-		    }else{
-			sender.sendMessage(ChatColor.GOLD+ name+ChatColor.RED+" hasn't been registered!");
+			sender.sendMessage(ChatColor.DARK_RED+name+ChatColor.RED+ " is already being used!");
 			return true;
+		    }  
+
+
+
+		    try { 
+			Integer id = Integer.parseInt(String.valueOf(args[2])); 
+			if(plugin.config.contains(String.valueOf(id))){
+			    sender.sendMessage(ChatColor.RED+"Item Id: "+ChatColor.DARK_RED+String.valueOf(id)+ChatColor.RED+"(Material:" +Material.getMaterial(id).toString().toLowerCase().replaceAll("_", "")+")"+ChatColor.RED+ " is already being used!");
+			    return true;
+			}
+
+
+
+			String[] effects = Arrays.copyOfRange(args, 3, args.length);
+			plugin.config.set(name+".id", id);
+			plugin.config.set(name+".effects", Arrays.asList(effects));
+			plugin.config.save(new File(plugin.getDataFolder()+ File.separator, "items.yml"));
+			sender.sendMessage(ChatColor.GREEN +"You successfully registered: "+ChatColor.GOLD + name +ChatColor.GREEN+" with the following id: "+ChatColor.GOLD + id+"("+Material.getMaterial(id).toString().replace("_", "").toUpperCase()+")");
+		    }catch(Exception e){
+			e.printStackTrace();
+
+
 		    }
-		}else if(args[0].equalsIgnoreCase("delete") && args.length != 2){
-		    plugin.printHelp(sender);
-		    return true;
+		    plugin.reloadConfig();
 		}
 	    }
+
 	}
+	return false;
     }
-    return false;
-}
 }
 
