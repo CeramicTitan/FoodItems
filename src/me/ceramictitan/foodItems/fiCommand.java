@@ -24,47 +24,40 @@ public class fiCommand implements CommandExecutor {
 	    return true;	
 	}
 
-	if(args.length == 2){
+	if(args.length == 2 && sender.hasPermission("fi.delete")){
 	    if(!sender.hasPermission("fi.delete")){
 		sender.sendMessage(ChatColor.RED+ "You do not have permission for this!");
 		return true;
 	    }
-	    if(args[0].equalsIgnoreCase("delete") && args.length != 2){
-		sender.sendMessage(ChatColor.RED+ "Not enough arguments");
-		plugin.printHelp(sender);
-		return true;
-	    }
-	}
-	if(args[0].equalsIgnoreCase("delete") && sender.hasPermission("fi.delete")){
-	    String name = String.valueOf(args[1]);
-	    if(plugin.config.contains(name)){
-		try{
-		    plugin.config.set(name, null);
-		    plugin.config.save(new File(plugin.getDataFolder()+ File.separator, "items.yml"));
-		    plugin.reloadConfig();
-		    sender.sendMessage(ChatColor.GOLD+name+ChatColor.RED+" has been deleted!");
+	    if(args[0].equalsIgnoreCase("delete") && sender.hasPermission("fi.delete")){
+		String name = String.valueOf(args[1]);
+		if(plugin.config.contains(name)){
+		    try{
+			plugin.config.set(name, null);
+			plugin.config.save(new File(plugin.getDataFolder()+ File.separator, "items.yml"));
+			plugin.reloadConfig();
+			sender.sendMessage(ChatColor.GOLD+name+ChatColor.RED+" has been deleted!");
+			return true;
+		    }catch(Exception e){e.printStackTrace();}
+
+
+
+		}else if(!plugin.config.contains(name)){
+		    sender.sendMessage(ChatColor.GOLD+ name+ChatColor.RED+" hasn't been registered!");
 		    return true;
-		}catch(Exception e){e.printStackTrace();}
-
-
-
-	    }else{
-		sender.sendMessage(ChatColor.GOLD+ name+ChatColor.RED+" hasn't been registered!");
-		return true;
+		}
 	    }
+	}else if(args.length < 2 && sender.hasPermission("fi.delete")){
+	    sender.sendMessage(ChatColor.RED+ "Not enough arguments");
+	    plugin.printHelp(sender);
+	    return true;
 	}
-
-
-	if(args.length >= 3){
+	if(args.length >= 3 && sender.hasPermission("fi.add")){
 	    if(!sender.hasPermission("fi.add")){
 		sender.sendMessage(ChatColor.RED+ "You do not have permission for this!");
 		return true;
 
 
-	    }if(args[0].equalsIgnoreCase("add") && args.length < 3){
-		sender.sendMessage(ChatColor.RED+ "Not enough arguments");
-		plugin.printHelp(sender);
-		return true;
 	    }
 	    if(args[0].equalsIgnoreCase("add")){
 		String name = String.valueOf(args[1]);
@@ -95,6 +88,10 @@ public class fiCommand implements CommandExecutor {
 		}
 	    }
 	    plugin.reloadConfig();
+	}else if(args.length < 3 && sender.hasPermission("fi.add")){
+	    sender.sendMessage(ChatColor.RED+ "Not enough arguments");
+	    plugin.printHelp(sender);
+	    return true;
 	}
 	return false;
     }

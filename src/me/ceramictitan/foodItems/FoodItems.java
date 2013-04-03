@@ -32,6 +32,7 @@ public class FoodItems extends JavaPlugin {
 	    }
 	config = YamlConfiguration.loadConfiguration(new File(getDataFolder() + File.separator, "items.yml"));
 	getCommand("fiCommand").setExecutor(new fiCommand(this));
+	getServer().getPluginManager().registerEvents(new foodListener(this), this);
 	for(String titan : this.getTitan()){
 	    getServer().getConsoleSender().sendMessage(titan);
 	}
@@ -42,7 +43,10 @@ public class FoodItems extends JavaPlugin {
     }
 
     public void addConfig(){
-
+	getConfig().addDefault("potionEffects.duration", 10);
+	getConfig().addDefault("potionEffects.potency", 1);
+	getConfig().options().copyDefaults(true);
+	saveConfig();
     }
     public String[] getTitan(){
 	String[] titan = new String[8];
