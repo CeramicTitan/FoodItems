@@ -69,10 +69,12 @@ public class fiCommand implements CommandExecutor {
 
 
 		try { 
-		    Integer id = Integer.parseInt(String.valueOf(args[2])); 
-		    if(plugin.config.contains(String.valueOf(id))){
-			sender.sendMessage(ChatColor.RED+"Item Id: "+ChatColor.DARK_RED+String.valueOf(id)+ChatColor.RED+"(Material:" +Material.getMaterial(id).toString().toLowerCase().replaceAll("_", "")+")"+ChatColor.RED+ " is already being used!");
-			return true;
+		    Integer id = Integer.parseInt(args[2]); 
+		    for(String configName : plugin.config.getKeys(false)){
+			if(plugin.config.getInt(configName+".id") == id){
+			    sender.sendMessage(ChatColor.RED+"Item Id: "+ChatColor.DARK_RED+String.valueOf(id)+ChatColor.RED+"(Material:" +Material.getMaterial(id).toString().toLowerCase().replaceAll("_", "")+")"+ChatColor.RED+ " is already being used!");
+			    return true;
+			}
 		    }
 
 
